@@ -21,7 +21,7 @@ Widget buildTextField(
     children: <Widget>[
       Text(
         text,
-        style: kLabelStyle,
+        style: kLabelStyle.copyWith(color: blackColor),
       ),
       SizedBox(height: defaultPadding / 2),
       Container(
