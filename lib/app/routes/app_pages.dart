@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import 'package:juniormobileprogrammer/app/modules/detail/bindings/detail_binding.dart';
+import 'package:juniormobileprogrammer/app/modules/detail/views/detail_view.dart';
 import 'package:juniormobileprogrammer/app/modules/home/bindings/home_binding.dart';
 import 'package:juniormobileprogrammer/app/modules/home/views/home_view.dart';
 import 'package:juniormobileprogrammer/app/modules/input_data/bindings/input_data_binding.dart';
@@ -22,6 +24,11 @@ class AppPages {
       name: _Paths.INPUT_DATA,
       page: () => InputDataView(),
       binding: InputDataBinding(),
+    ),
+    GetPage(
+      name: _Paths.DETAIL,
+      page: () => DetailView(),
+      binding: DetailBinding(),
     ),
   ];
 }

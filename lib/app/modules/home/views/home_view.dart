@@ -29,8 +29,12 @@ class HomeView extends GetView<HomeController> {
             child: Row(
               children: [
                 InkWell(
-                  onTap: () {
-                    Get.toNamed(Routes.INPUT_DATA);
+                  onTap: () async {
+                    var data = await Get.toNamed(
+                      Routes.INPUT_DATA,
+                    );
+                    print(data);
+                    if (data == 'success') controller.getUsers();
                   },
                   child: Icon(Icons.add),
                 ),
@@ -57,121 +61,127 @@ class HomeView extends GetView<HomeController> {
               itemCount: controller.listUser.length,
               itemBuilder: (context, position) {
                 UserModel user = controller.listUser[position];
-                return Container(
-                  margin: EdgeInsets.symmetric(vertical: defaultPadding * .2),
-                  color: whiteColor,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Image.file(
-                            File(user.path.toString()),
-                            height: 100,
-                            width: 100,
-                            fit: BoxFit.cover,
-                          ),
-                          SizedBox(
-                            width: defaultPadding,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                user.name.toString(),
-                                style: Theme.of(context).textTheme.titleLarge,
-                              ),
-                              SizedBox(
-                                height: defaultPadding / 2,
-                              ),
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.home,
-                                    size: 20,
-                                  ),
-                                  SizedBox(
-                                    width: defaultPadding / 2,
-                                  ),
-                                  Text(
-                                    user.address.toString(),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.phone,
-                                    size: 20,
-                                  ),
-                                  SizedBox(
-                                    width: defaultPadding / 2,
-                                  ),
-                                  Text(
-                                    user.phoneNumber.toString(),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          IconButton(
-                              icon: Icon(Icons.edit),
-                              onPressed: () async {
-                                var data = await Get.toNamed(Routes.INPUT_DATA,
-                                    arguments: [
-                                      {"position": position},
-                                      {"user": user}
-                                    ]);
-                                print(data);
-                                if (data == 'success') controller.getUsers();
-                              }),
-                          IconButton(
-                              icon: Icon(Icons.delete),
-                              onPressed: () {
-                                Get.defaultDialog(
-                                    title: "Konfirmasi Hapus Data",
-                                    content: Container(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: defaultPadding),
-                                      child: Column(
-                                        children: [
-                                          Text(
-                                              "Apakah Anda yakin akan menghapus data tersebut?"),
-                                          SizedBox(
-                                              height: defaultPadding * 1.5),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              ElevatedButtonCustom(
-                                                text: "Hapus",
-                                                callback: () {
-                                                  controller.delete(position);
-                                                  Get.back();
-                                                },
-                                              ),
-                                              SizedBox(
-                                                width: defaultPadding,
-                                              ),
-                                              OutlineButtonCustom(
-                                                text: "Batal",
-                                                callback: () {
-                                                  Get.back();
-                                                },
-                                              )
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ));
-                              }),
-                        ],
-                      )
-                    ],
+                return InkWell(
+                  onTap: () {
+                    Get.toNamed(Routes.DETAIL, arguments: user);
+                  },
+                  child: Container(
+                    margin: EdgeInsets.symmetric(vertical: defaultPadding * .2),
+                    color: whiteColor,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Image.file(
+                              File(user.path.toString()),
+                              height: 100,
+                              width: 100,
+                              fit: BoxFit.cover,
+                            ),
+                            SizedBox(
+                              width: defaultPadding,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  user.name.toString(),
+                                  style: Theme.of(context).textTheme.titleLarge,
+                                ),
+                                SizedBox(
+                                  height: defaultPadding / 2,
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.home,
+                                      size: 20,
+                                    ),
+                                    SizedBox(
+                                      width: defaultPadding / 2,
+                                    ),
+                                    Text(
+                                      user.address.toString(),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.phone,
+                                      size: 20,
+                                    ),
+                                    SizedBox(
+                                      width: defaultPadding / 2,
+                                    ),
+                                    Text(
+                                      user.phoneNumber.toString(),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            IconButton(
+                                icon: Icon(Icons.edit),
+                                onPressed: () async {
+                                  var data = await Get.toNamed(
+                                      Routes.INPUT_DATA,
+                                      arguments: [
+                                        {"position": position},
+                                        {"user": user}
+                                      ]);
+                                  print(data);
+                                  if (data == 'success') controller.getUsers();
+                                }),
+                            IconButton(
+                                icon: Icon(Icons.delete),
+                                onPressed: () {
+                                  Get.defaultDialog(
+                                      title: "Konfirmasi Hapus Data",
+                                      content: Container(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: defaultPadding),
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                                "Apakah Anda yakin akan menghapus data tersebut?"),
+                                            SizedBox(
+                                                height: defaultPadding * 1.5),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                ElevatedButtonCustom(
+                                                  text: "Hapus",
+                                                  callback: () {
+                                                    controller.delete(position);
+                                                    Get.back();
+                                                  },
+                                                ),
+                                                SizedBox(
+                                                  width: defaultPadding,
+                                                ),
+                                                OutlineButtonCustom(
+                                                  text: "Batal",
+                                                  callback: () {
+                                                    Get.back();
+                                                  },
+                                                )
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ));
+                                }),
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 );
               },

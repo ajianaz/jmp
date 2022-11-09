@@ -24,7 +24,6 @@ class HomeController extends GetxController {
     listUser.clear();
     final box = await Hive.openBox<UserModel>(appName);
     listUser.addAll(box.values.toList());
-    print("Total data : ${listUser.length}");
     update();
     refresh();
   }

@@ -12,9 +12,16 @@ import 'package:path_provider/path_provider.dart' as pathProvider;
 import 'app/core/values/colors.dart';
 import 'app/core/values/strings.dart';
 import 'app/routes/app_pages.dart';
+// import 'package:google_maps_flutter_android/google_maps_flutter_android.dart';
+// import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // final GoogleMapsFlutterPlatform mapsImplementation =
+  //     GoogleMapsFlutterPlatform.instance;
+  // if (mapsImplementation is GoogleMapsFlutterAndroid) {
+  //   mapsImplementation.useAndroidViewSurface = true;
+  // }
   // await Hive.initFlutter();
   // await Hive.openBox(appName);
 

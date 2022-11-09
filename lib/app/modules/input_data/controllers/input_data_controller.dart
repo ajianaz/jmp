@@ -7,7 +7,7 @@ import 'package:juniormobileprogrammer/app/data/model/user_model.dart';
 
 class InputDataController extends GetxController {
   late var argument;
-  late UserModel? user;
+  UserModel? user = null;
 
   RxString nama = RxString("");
   RxString alamat = RxString("");
@@ -69,7 +69,7 @@ class InputDataController extends GetxController {
   }
 
   saveUserData() async {
-    if (index.value == 0 && user == null) {
+    if (index.value == 0 && (user == null || user.isBlank!)) {
       UserModel addUser = new UserModel(
           name: nama.value,
           address: alamat.value,
