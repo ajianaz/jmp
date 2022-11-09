@@ -44,7 +44,7 @@ class HiveHelper {
     return box.values.toList();
   }
 
-  updateUser(int id, UserModel item) async {
+  updateUser(int index, UserModel item) async {
     UserModel updateUser = new UserModel(
         name: item.name,
         address: item.address,
@@ -53,7 +53,7 @@ class HiveHelper {
         latitude: item.latitude,
         longitude: item.longitude);
     var box = await Hive.openBox<UserModel>(appName);
-    box.putAt(id, updateUser);
+    box.putAt(index, updateUser);
   }
 
   deleteUser(int id) async {

@@ -6,11 +6,21 @@ import 'package:juniormobileprogrammer/app/data/model/user_model.dart';
 class HomeController extends GetxController {
   List<UserModel> listUser = <UserModel>[].obs;
 
-  // getUsers() {
-  //   listUser = HiveHelper().getUsers() as List<UserModel>;
-  // }
+  UserModel user = UserModel().obs();
 
-  getUsers() async {
+  RxString nama = RxString("");
+  RxString alamat = RxString("");
+  RxString nohp = RxString("");
+
+  loadUser(UserModel user) {
+    nama.value = user.name.toString();
+    alamat.value = user.address.toString();
+    nohp.value = user.phoneNumber.toString();
+  }
+
+  pushUser() {}
+
+  Future<void> getUsers() async {
     listUser.clear();
     final box = await Hive.openBox<UserModel>(appName);
     listUser.addAll(box.values.toList());

@@ -6,19 +6,37 @@ import 'package:juniormobileprogrammer/app/core/values/strings.dart';
 import 'package:juniormobileprogrammer/app/data/model/user_model.dart';
 
 class InputDataController extends GetxController {
+  late var argument;
+  late UserModel? user;
+
   RxString nama = RxString("");
   RxString alamat = RxString("");
   RxString nohp = RxString("");
   RxDouble latitude = RxDouble(0.0);
   RxDouble longitude = RxDouble(0.0);
-  RxString location = RxString("Menunggu load GPS");
+  RxString location = RxString("");
   RxString imagepath = RxString("");
+  RxInt index = RxInt(0);
 
   final ImagePicker iPicker = ImagePicker();
   XFile? image;
 
   getPathXFile() {
     return image?.path;
+  }
+
+  loadUser() {
+    user = argument[1]['user'];
+    index.value = argument[0]['position'];
+    update();
+
+    nama.value = user!.name.toString();
+    alamat.value = user!.address.toString();
+    nohp.value = user!.phoneNumber.toString();
+    imagepath.value = user!.path.toString();
+    latitude.value = user!.latitude!;
+    longitude.value = user!.longitude!;
+    location.value = '${user!.latitude}, ${user!.longitude}';
   }
 
   //getLongLAT
@@ -51,18 +69,30 @@ class InputDataController extends GetxController {
   }
 
   saveUserData() async {
-    UserModel addUser = new UserModel(
-        name: nama.value,
-        address: alamat.value,
-        phoneNumber: nohp.value,
-        path: imagepath.value,
-        latitude: latitude.value,
-        longitude: longitude.value);
-    var box = await Hive.openBox<UserModel>(appName);
+    if (index.value == 0 && user == null) {
+      UserModel addUser = new UserModel(
+          name: nama.value,
+          address: alamat.value,
+          phoneNumber: nohp.value,
+          path: imagepath.value,
+          latitude: latitude.value,
+          longitude: longitude.value);
+      var box = await Hive.openBox<UserModel>(appName);
 
-    box.add(addUser);
+      box.add(addUser);
 
-    resetInput();
+      resetInput();
+    } else {
+      UserModel updateUser = new UserModel(
+          name: nama.value,
+          address: alamat.value,
+          phoneNumber: nohp.value,
+          path: imagepath.value,
+          latitude: latitude.value,
+          longitude: longitude.value);
+      var box = await Hive.openBox<UserModel>(appName);
+      box.putAt(index.value, updateUser);
+    }
   }
 
   isDataValid() {

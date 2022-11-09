@@ -17,10 +17,17 @@ import '../controllers/input_data_controller.dart';
 class InputDataView extends GetView<InputDataController> {
   @override
   Widget build(BuildContext context) {
+    controller.argument = Get.arguments;
+    // print(controller.argument[1]);
+    if (controller.argument != null) {
+      controller.loadUser();
+    }
     return Obx(
       () => Scaffold(
         appBar: AppBar(
-          title: Text('Input Data User'),
+          title: Text(controller.argument == null
+              ? 'Input Data User'
+              : "Update Data User"),
           centerTitle: true,
           actions: [
             Container(
@@ -29,11 +36,46 @@ class InputDataView extends GetView<InputDataController> {
                 child: Icon(Icons.save),
                 onTap: () {
                   if (controller.isDataValid()) {
-                    //todo simpan
-                    controller.saveUserData();
                     Get.defaultDialog(
-                        title: "Perhatian",
-                        middleText: "Berhasil menyimpan data");
+                        title: "Konfirmasi Hapus Data",
+                        content: Container(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: defaultPadding),
+                          child: Column(
+                            children: [
+                              Text(
+                                  "Apakah Anda yakin akan menyimp an data tersebut?"),
+                              SizedBox(height: defaultPadding * 1.5),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  ElevatedButtonCustom(
+                                    text: "Simpan",
+                                    callback: () {
+                                      controller.saveUserData();
+                                      Get.defaultDialog(
+                                          title: "Perhatian",
+                                          middleText:
+                                              "Berhasil menyimpan data");
+                                      Get.back();
+                                      Get.back();
+                                      Get.back(result: 'success');
+                                    },
+                                  ),
+                                  SizedBox(
+                                    width: defaultPadding,
+                                  ),
+                                  OutlineButtonCustom(
+                                    text: "Batal",
+                                    callback: () {
+                                      Get.back();
+                                    },
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                        ));
                   } else {
                     Get.defaultDialog(
                         title: "Perhatian",
@@ -55,6 +97,7 @@ class InputDataView extends GetView<InputDataController> {
                   "Anaz S. Aji",
                   controller.nama,
                   TextInputType.text,
+                  initValue: controller.nama.value,
                   icon: Icons.person,
                 ),
                 SizedBox(
@@ -65,6 +108,7 @@ class InputDataView extends GetView<InputDataController> {
                   "Semarang",
                   controller.alamat,
                   TextInputType.text,
+                  initValue: controller.alamat.value,
                   icon: Icons.home,
                 ),
                 SizedBox(
@@ -75,13 +119,19 @@ class InputDataView extends GetView<InputDataController> {
                   "085727xxx",
                   controller.nohp,
                   TextInputType.phone,
+                  initValue: controller.nohp.value,
                   icon: Icons.phone,
                 ),
                 SizedBox(
                   height: defaultPadding,
                 ),
                 Text(
-                  controller.location.value,
+                  controller.location.value == ""
+                      ? "Menunggu Lokasi GPS"
+                      : controller.location.value,
+                  // controller.latitude.value == 0.0
+                  //     ? "Menunggu load GPS"
+                  //     : "${controller.latitude.value}, ${controller.longitude.value}",
                   style: kLabelStyle.copyWith(color: blackColor),
                 ),
                 SizedBox(
@@ -147,7 +197,7 @@ class InputDataView extends GetView<InputDataController> {
                 ),
                 controller.imagepath.value != ""
                     ? Image.file(
-                        File(controller.image!.path),
+                        File(controller.imagepath.value),
                         fit: BoxFit.cover,
                         height: 200,
                       )

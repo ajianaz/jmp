@@ -28,6 +28,7 @@ void main() async {
       title: appName,
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
+      debugShowCheckedModeBanner: false,
       theme: theme.copyWith(
         primaryColor: primaryColor,
         scaffoldBackgroundColor: bgColor,
