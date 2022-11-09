@@ -1,21 +1,11 @@
 import 'package:hive/hive.dart';
+import 'package:juniormobileprogrammer/app/data/model/user_model.dart';
 
 import '../../values/strings.dart';
 
 class HiveHelper {
   //Hive String
   static const HIVE_USER = "user";
-
-  static const HIVE_ID = "id";
-  static const HIVE_NAME = 'name';
-  static const HIVE_EMAIL = 'email';
-  static const HIVE_NOMOR_WA = 'nomor_wa';
-  static const HIVE_ROLE_ID = 'role_id';
-  static const HIVE_SUSPEND = 'suspended';
-  static const HIVE_FCM_TOKEN = 'fcmToken';
-  static const HIVE_TOKEN = 'token';
-  static const HIVE_USER_APIKEY = 'apiKey';
-  static const HIVE_IS_LOGGED_IN = 'isLoggedIn';
 
   static final _hive = Hive.box(appName);
 
@@ -36,33 +26,38 @@ class HiveHelper {
     return check;
   }
 
-  static dynamic getUser() {
-    dynamic user;
-    user.id = getData(HIVE_ID);
-    user.email = getData(HIVE_EMAIL);
-    user.name = getData(HIVE_NAME);
-    user.nomor_wa = getData(HIVE_NOMOR_WA);
-    user.suspend = getData(HIVE_SUSPEND);
+  addUser(UserModel item) async {
+    UserModel addUser = new UserModel(
+        name: item.name,
+        address: item.address,
+        phoneNumber: item.phoneNumber,
+        path: item.path,
+        latitude: item.latitude,
+        longitude: item.longitude);
+    var box = await Hive.openBox<UserModel>(appName);
 
-    return user;
+    box.add(addUser);
   }
 
-  static saveUser(dynamic user) {
-    putData(HIVE_ID, user?.id);
-    putData(HIVE_NAME, user?.name);
-    putData(HIVE_EMAIL, user?.email);
-    putData(HIVE_ROLE_ID, user?.role_id);
-    putData(HIVE_SUSPEND, user?.suspend);
-    putData(HIVE_TOKEN, user?.token);
+  Future<List<UserModel>> getUsers() async {
+    final box = await Hive.openBox<UserModel>(appName);
+    return box.values.toList();
   }
 
-  static logoutUser() {
-    putData(HIVE_IS_LOGGED_IN, false);
-    putData(HIVE_ID, null);
-    putData(HIVE_NAME, null);
-    putData(HIVE_EMAIL, null);
-    putData(HIVE_ROLE_ID, null);
-    putData(HIVE_SUSPEND, null);
-    putData(HIVE_TOKEN, null);
+  updateUser(int id, UserModel item) async {
+    UserModel updateUser = new UserModel(
+        name: item.name,
+        address: item.address,
+        phoneNumber: item.phoneNumber,
+        path: item.path,
+        latitude: item.latitude,
+        longitude: item.longitude);
+    var box = await Hive.openBox<UserModel>(appName);
+    box.putAt(id, updateUser);
+  }
+
+  deleteUser(int id) async {
+    final box = Hive.box<UserModel>(appName);
+    box.deleteAt(id);
   }
 }

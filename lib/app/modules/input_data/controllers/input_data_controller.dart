@@ -1,13 +1,16 @@
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:juniormobileprogrammer/app/core/values/strings.dart';
+import 'package:juniormobileprogrammer/app/data/model/user_model.dart';
 
 class InputDataController extends GetxController {
   RxString nama = RxString("");
   RxString alamat = RxString("");
   RxString nohp = RxString("");
-  RxString latitude = RxString("");
-  RxString longitude = RxString("");
+  RxDouble latitude = RxDouble(0.0);
+  RxDouble longitude = RxDouble(0.0);
   RxString location = RxString("Menunggu load GPS");
   RxString imagepath = RxString("");
 
@@ -45,6 +48,43 @@ class InputDataController extends GetxController {
     return await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.high,
     );
+  }
+
+  saveUserData() async {
+    UserModel addUser = new UserModel(
+        name: nama.value,
+        address: alamat.value,
+        phoneNumber: nohp.value,
+        path: imagepath.value,
+        latitude: latitude.value,
+        longitude: longitude.value);
+    var box = await Hive.openBox<UserModel>(appName);
+
+    box.add(addUser);
+
+    resetInput();
+  }
+
+  isDataValid() {
+    if (nama.value.isNotEmpty &&
+        alamat.value.isNotEmpty &&
+        nohp.value.isNotEmpty &&
+        imagepath.value.isNotEmpty &&
+        latitude.value != 0.0 &&
+        longitude.value != 0.0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  resetInput() {
+    nama.value = "";
+    alamat.value = "";
+    nohp.value = "";
+    imagepath.value = "";
+    latitude.value = 0.0;
+    longitude.value = 0.0;
   }
 
   @override

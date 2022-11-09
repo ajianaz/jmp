@@ -20,8 +20,29 @@ class InputDataView extends GetView<InputDataController> {
     return Obx(
       () => Scaffold(
         appBar: AppBar(
-          title: Text('InputDataView'),
+          title: Text('Input Data User'),
           centerTitle: true,
+          actions: [
+            Container(
+              padding: EdgeInsets.only(right: defaultPadding),
+              child: InkWell(
+                child: Icon(Icons.save),
+                onTap: () {
+                  if (controller.isDataValid()) {
+                    //todo simpan
+                    controller.saveUserData();
+                    Get.defaultDialog(
+                        title: "Perhatian",
+                        middleText: "Berhasil menyimpan data");
+                  } else {
+                    Get.defaultDialog(
+                        title: "Perhatian",
+                        middleText: "Silahkan lengkapi data dahulu");
+                  }
+                },
+              ),
+            ),
+          ],
         ),
         body: SingleChildScrollView(
           child: Container(
@@ -53,7 +74,7 @@ class InputDataView extends GetView<InputDataController> {
                   "No. Handphone",
                   "085727xxx",
                   controller.nohp,
-                  TextInputType.text,
+                  TextInputType.phone,
                   icon: Icons.phone,
                 ),
                 SizedBox(
@@ -71,8 +92,8 @@ class InputDataView extends GetView<InputDataController> {
                   callback: () async {
                     Position position =
                         await controller.getGeoLocationPosition();
-                    controller.latitude.value = "${position.latitude}";
-                    controller.longitude.value = "${position.longitude}";
+                    controller.latitude.value = position.latitude;
+                    controller.longitude.value = position.longitude;
                     controller.location.value =
                         '${position.latitude}, ${position.longitude}';
                   },
@@ -94,9 +115,11 @@ class InputDataView extends GetView<InputDataController> {
                               callback: () async {
                                 controller.image = await controller.iPicker
                                     .pickImage(source: ImageSource.camera);
-                                print(controller.image);
-                                controller.imagepath.value =
-                                    controller.image!.path;
+                                print(controller.image!.path);
+                                Get.back();
+                                if (controller.image != null)
+                                  controller.imagepath.value =
+                                      controller.image!.path;
                               },
                             ),
                             SizedBox(
@@ -107,7 +130,10 @@ class InputDataView extends GetView<InputDataController> {
                               callback: () async {
                                 controller.image = await controller.iPicker
                                     .pickImage(source: ImageSource.gallery);
-                                print(controller.image!.path);
+                                Get.back();
+                                if (controller.image != null)
+                                  controller.imagepath.value =
+                                      controller.image!.path;
                               },
                             ),
                           ],
@@ -115,6 +141,9 @@ class InputDataView extends GetView<InputDataController> {
                       ),
                     );
                   },
+                ),
+                SizedBox(
+                  height: defaultPadding,
                 ),
                 controller.imagepath.value != ""
                     ? Image.file(
