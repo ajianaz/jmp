@@ -39,6 +39,7 @@ class InputDataController extends GetxController {
     latitude.value = user!.latitude!;
     longitude.value = user!.longitude!;
     location.value = '${user!.latitude}, ${user!.longitude}';
+    gender.value = user!.gender.toString();
   }
 
   //getLongLAT

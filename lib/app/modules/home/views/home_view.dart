@@ -38,13 +38,6 @@ class HomeView extends GetView<HomeController> {
                   },
                   child: Icon(Icons.add),
                 ),
-                // SizedBox(
-                //   width: defaultPadding,
-                // ),
-                // InkWell(
-                //   child: Icon(Icons.refresh),
-                //   onTap: () =>
-                // ),
               ],
             ),
           )
