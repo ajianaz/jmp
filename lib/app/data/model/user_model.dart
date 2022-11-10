@@ -22,11 +22,15 @@ class UserModel extends HiveObject {
   @HiveField(5)
   final double? longitude;
 
+  @HiveField(6)
+  final String? gender;
+
   UserModel(
       {this.name,
       this.address,
       this.phoneNumber,
       this.path,
       this.latitude,
-      this.longitude});
+      this.longitude,
+      this.gender});
 }

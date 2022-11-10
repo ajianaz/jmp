@@ -39,36 +39,48 @@ class DetailView extends GetView<DetailController> {
                         },
                       ),
               ),
-              Column(
-                children: [
-                  SizedBox(
-                    height: defaultPadding,
+              Expanded(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: defaultPadding),
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: defaultPadding,
+                        ),
+                        Image.file(
+                          File(controller.user!.path.toString()),
+                          height: 250,
+                        ),
+                        SizedBox(
+                          height: defaultPadding,
+                        ),
+                        RowData(
+                          icon: Icons.person,
+                          text: controller.user!.name.toString(),
+                        ),
+                        RowData(
+                          icon: Icons.home,
+                          text: controller.user!.address.toString(),
+                        ),
+                        RowData(
+                          icon: Icons.phone,
+                          text: controller.user!.phoneNumber.toString(),
+                        ),
+                        RowData(
+                          icon: Icons.location_on,
+                          text:
+                              "${controller.user!.latitude}, ${controller.user!.longitude}",
+                        ),
+                        RowData(
+                          icon: Icons.label,
+                          text: controller.user!.gender.toString(),
+                        ),
+                      ],
+                    ),
                   ),
-                  Image.file(
-                    File(controller.user!.path.toString()),
-                    height: 250,
-                  ),
-                  SizedBox(
-                    height: defaultPadding,
-                  ),
-                  RowData(
-                    icon: Icons.person,
-                    text: controller.user!.name.toString(),
-                  ),
-                  RowData(
-                    icon: Icons.home,
-                    text: controller.user!.address.toString(),
-                  ),
-                  RowData(
-                    icon: Icons.phone,
-                    text: controller.user!.phoneNumber.toString(),
-                  ),
-                  RowData(
-                    icon: Icons.location_on,
-                    text:
-                        "${controller.user!.latitude}, ${controller.user!.longitude}",
-                  ),
-                ],
+                ),
               ),
             ],
           ),

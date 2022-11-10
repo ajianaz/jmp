@@ -125,6 +125,39 @@ class InputDataView extends GetView<InputDataController> {
                 SizedBox(
                   height: defaultPadding,
                 ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Jenis Kelamin",
+                      style: kLabelStyle.copyWith(color: blackColor),
+                    ),
+                    ListTile(
+                      title: const Text('PRIA'),
+                      leading: Radio<String>(
+                        toggleable: true,
+                        value: "PRIA",
+                        groupValue: controller.gender.value,
+                        onChanged: (value) {
+                          controller.gender.value = value.toString();
+                        },
+                      ),
+                    ),
+                    ListTile(
+                      title: const Text('WANITA'),
+                      leading: Radio<String>(
+                        value: "WANITA",
+                        groupValue: controller.gender.value,
+                        onChanged: (value) {
+                          controller.gender.value = value.toString();
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: defaultPadding,
+                ),
                 Text(
                   controller.location.value == ""
                       ? "Menunggu Lokasi GPS"

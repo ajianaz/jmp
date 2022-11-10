@@ -16,6 +16,8 @@ class InputDataController extends GetxController {
   RxDouble longitude = RxDouble(0.0);
   RxString location = RxString("");
   RxString imagepath = RxString("");
+  RxString gender = RxString("PRIA");
+
   RxInt index = RxInt(0);
 
   final ImagePicker iPicker = ImagePicker();
@@ -76,7 +78,8 @@ class InputDataController extends GetxController {
           phoneNumber: nohp.value,
           path: imagepath.value,
           latitude: latitude.value,
-          longitude: longitude.value);
+          longitude: longitude.value,
+          gender: gender.value);
       var box = await Hive.openBox<UserModel>(appName);
 
       box.add(addUser);
@@ -89,7 +92,8 @@ class InputDataController extends GetxController {
           phoneNumber: nohp.value,
           path: imagepath.value,
           latitude: latitude.value,
-          longitude: longitude.value);
+          longitude: longitude.value,
+          gender: gender.value);
       var box = await Hive.openBox<UserModel>(appName);
       box.putAt(index.value, updateUser);
     }
@@ -101,7 +105,8 @@ class InputDataController extends GetxController {
         nohp.value.isNotEmpty &&
         imagepath.value.isNotEmpty &&
         latitude.value != 0.0 &&
-        longitude.value != 0.0) {
+        longitude.value != 0.0 &&
+        gender.value.isNotEmpty) {
       return true;
     } else {
       return false;
